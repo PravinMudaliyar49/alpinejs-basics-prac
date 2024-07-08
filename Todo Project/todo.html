@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Alpine Plugins -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.14.1/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="todo.css">
+    <title>Alpine Todo Practice</title>
+</head>
+
+<body>
+    <main class="main" x-data="{todos: $persist([])}">
+        <div class="left_app_container">
+            <form class="todo_form" @submit.prevent="
+                todos.push({id: `${new Date().getTime()}`.slice(-4), task: $refs.todoInput.value, isCompleted: false});
+                $refs.todoInput.value = '';
+            ">
+                <input type="text" name="todo" id="todo" class="todo_input" x-ref="todoInput">
+                <button type="submit" class="todo_form_btn">Add</button>
+            </form>
+            <div class="todos_completed_summary"
+                x-text="todos.filter(todo => todo.isCompleted).length + ' / ' + todos.length + ' tasks completed'">
+            </div>
+        </div>
+        <div class="right_app_container">
+            <ul class="todos_list">
+                <template x-for="todo in todos">
+                    <li class="todo_item_container" :class="{'completed': todo.isCompleted}">
+                        <button class="todo_checkmark" @click="
+                        const todoObj = todos.find(({id}) => id === todo.id);
+                        todoObj.isCompleted = !todoObj.isCompleted;
+                        ">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                            </svg>
+                        </button>
+                        <p class="todo_text" x-text="todo.task"></p>
+                        <button @click="todos = todos.filter(({id}) => id !== todo.id)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                        </button>
+                    </li>
+                </template>
+            </ul>
+            <button class="delete_all_tasks_btn" @click="todos = []">Delete all tasks</button>
+        </div>
+    </main>
+</body>
+
+</html>

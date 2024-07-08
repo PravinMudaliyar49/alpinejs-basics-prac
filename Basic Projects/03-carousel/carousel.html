@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlpineJS Modal</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container" x-data="{ carouselNumber: 0, handleCarouselChange(increment) { 
+        const nextCarouselNumber = increment ? this.carouselNumber + 1 : this.carouselNumber - 1;
+        
+        if(nextCarouselNumber < 0) {
+            this.carouselNumber = 2;
+        } else if(nextCarouselNumber > 2) {
+            this.carouselNumber = 0;
+        } else {
+            this.carouselNumber = nextCarouselNumber;
+        }
+     }}">
+        <div class="carousel-item" :class="{'active': carouselNumber === 0}">
+            <img src="img/img-1.jpg" alt="">
+        </div>
+        <div class="carousel-item" :class="{'active': carouselNumber === 1}">
+            <img src="img/img-2.jpg" alt="">
+        </div>
+        <div class="carousel-item" :class="{'active': carouselNumber === 2}">
+            <img src="img/img-3.jpg" alt="">
+        </div>
+
+        <div class="carousel-control">
+            <button @click="handleCarouselChange(false)">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+            </button>
+            <button @click="handleCarouselChange(true)">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</body>
+
+</html>

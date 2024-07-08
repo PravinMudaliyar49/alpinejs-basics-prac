@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AlpineJS Modal</title>
+	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div class="card" x-data="{countdownIsActive: false, countdown: 0}">
+		<div x-show="!countdownIsActive">
+			<form @submit.prevent="
+				countdownIsActive = true;
+				countdown = $refs.countdownInput.value;
+				const intervalId = setInterval(() => { 
+					if(countdown === 0) {
+						clearInterval(intervalId);
+						return;
+					} 
+					
+					countdown-- 
+				}, 1000);
+			">
+				<label for="number">Start Countdown</label>
+				<hr>
+				<input type="number" name="number" placeholder="20s" required x-ref="countdownInput">
+				<button type="submit">Start</button>
+			</form>
+		</div>
+		<div x-show="countdownIsActive">
+			<template x-if="countdown > 0">
+				<div>
+					<h4>Counting down</h4>
+					<p class="countdown" x-text="countdown"></p>
+				</div>
+			</template>
+			<template x-if="countdown === 0">
+				<h4>Countdown completed</h4>
+			</template>
+		</div>
+	</div>
+
+</body>
+
+</html>
